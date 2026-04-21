@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 RAW_PATH = "../../data/raw/gspc.csv"
-PROCESSED_PATH = "../../data/prepocessed/gspc_preprocessed.csv"
+PROCESSED_PATH = "../../data/preprocessed/gspc_preprocessed.csv"
 
 def load_data(file_path=RAW_PATH):
     if not os.path.exists(file_path):

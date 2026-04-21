@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import os
 import joblib
@@ -7,7 +8,12 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
 PROCESSED_PATH = "../../data/preprocessed/gspc_preprocessed.csv"
-MODEL_PATH = "../../models/randon_forest_model.pkl"
+MODEL_PATH = "../../models/random_forest_model.pkl"
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+#
+# PROCESSED_PATH = os.path.join(BASE_DIR, "data", "preprocessed", "gspc_preprocessed.csv")
+# MODEL_PATH = os.path.join(BASE_DIR, "models", "random_forest_model.pkl")
 
 def load_data(file_path=PROCESSED_PATH):
     if not os.path.exists(file_path):
@@ -18,13 +24,13 @@ def prepare_data(df):
     """Split feature and target"""
 
     # Drop non-numeric / data leakage columns
-    df = df.drop(columns=["Date"], error="ignore")
+    df = df.drop(columns=["Date"], errors="ignore")
 
     # Target column (next day price)
 
     target = "target"
 
-    X = df.drop(colums=[target])
+    X = df.drop(columns=[target])
     y = df[target]
 
     return X, y
@@ -44,7 +50,7 @@ def train_model(X_train, y_train):
     """Train Random forest model"""
 
     model = RandomForestRegressor(
-        n_estimator=200,
+        n_estimators=200,
         max_depth=10,
         random_state=42,
         n_jobs=-1
@@ -56,12 +62,17 @@ def evaluate_model(model, X_test, y_test):
     """evaluate model performance"""
     predictions = model.predict(X_test)
 
-    rmse = mean_squared_error(y_test, predictions, squared=False)
+
     mae = mean_absolute_error(y_test, predictions)
+    mse = mean_squared_error(y_test, predictions)
+    rmse = np.sqrt(mse)
 
     print("Model evaluation Metrics")
+    print("y_test sample:", y_test.head().values)
+    print("predictions sample:", predictions[:5])
     print(f"RMSE: {rmse: .4f}")
     print(f"Mae: {mae: .4f}")
+    print("MSE:", mse)
     return rmse, mae
 
 def save_model(model, file_path=MODEL_PATH):
