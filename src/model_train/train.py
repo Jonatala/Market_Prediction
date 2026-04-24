@@ -35,7 +35,7 @@ def prepare_data(df):
 
     return X, y
 
-def train_text_split(X, y, train_ratio=0.7):
+def train_test_split(X, y, train_ratio=0.7):
     split_index = int(len(X) * train_ratio)
 
     X_train = X.iloc[:split_index]
