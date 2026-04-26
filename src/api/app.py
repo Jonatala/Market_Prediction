@@ -5,7 +5,11 @@ import os
 
 app = FastAPI()
 
-MODEL_PATH = "../../models/randon_forest_model.pkl"
+MODEL_PATH = "../../models/random_forest_model.pkl"
+
+# Load model
+
+model = joblib.load(MODEL_PATH)
 
 @app.get("/")
 def home():
@@ -19,4 +23,5 @@ def predict(data: dict):
 
     prediction = model.predict(df)[0]
 
-    return {"prediction": float(prediction)}
+    #return {"prediction": float(prediction)}
+    return {"prediction": round(float(prediction), 2)}

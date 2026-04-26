@@ -19,6 +19,9 @@ def create_features(df):
         df["Date"] = pd.to_datetime(df["Date"])
         df.sort_values("Date", inplace=True)
 
+        # drop cloumns not needed for training
+        df = df.drop(columns=["Date", "Dividends", "Stock Splits"], errors="ignore")
+
         # Creating basic financial features
 
         # Daily returns
