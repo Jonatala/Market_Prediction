@@ -20,7 +20,8 @@ def create_features(df):
         df.sort_values("Date", inplace=True)
 
         # drop cloumns not needed for training
-        df = df.drop(columns=["Date", "Dividends", "Stock Splits"], errors="ignore")
+        df = df.drop(columns=["Date"], errors="ignore")
+
 
         # Creating basic financial features
 
